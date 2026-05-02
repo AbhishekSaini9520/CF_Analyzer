@@ -8,8 +8,8 @@ import pandas as pd
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS                
 from datetime import datetime, timedelta
-import faiss                                     
-from sentence_transformers import SentenceTransformer  
+# import faiss                                     
+# from sentence_transformers import SentenceTransformer  
 
 BASE_DIR  = os.path.dirname(os.path.abspath(__file__))
 SRC_DIR   = os.path.join(BASE_DIR, "src")
@@ -207,6 +207,9 @@ def recommended():
 # for ai chat
 @app.route("/chat", methods=["POST"])
 def chat():
+    return jsonify({
+        "answer": "Chat feature temporarily disabled to reduce server load."
+    })
     data  = request.get_json(force=True)
     query = data.get("query", "").strip()
 
