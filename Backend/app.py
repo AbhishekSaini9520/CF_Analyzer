@@ -42,25 +42,29 @@ _chat_embed_model  = None
 
 
 def load_recommender():
-    global _recommender_model, _recommender_df, _feature_columns
+    global _recommender_model, _recommender_df
 
     if _recommender_model is not None:
         return
 
     MODEL_PATH   = os.path.join(BASE_DIR, "model", "model1.pkl")
-    DATA_CSV     = os.path.join(BASE_DIR, "data", "cf_data.csv")
-    PROBLEMS_CSV = os.path.join(SRC_DIR,  "problems_data.csv")
+    PROBLEMS_CSV = os.path.join(SRC_DIR, "problems_data.csv")
 
+    # Load model
     with open(MODEL_PATH, "rb") as f:
         _recommender_model = pickle.load(f)
 
-    df_train = pd.read_csv(DATA_CSV)
-    _feature_columns = [col for col in df_train.columns if col != "solved"]
+    # Load ONLY required columns (reduces memory)
+    _recommender_df = pd.read_csv(
+        PROBLEMS_CSV,
+        usecols=["contestId", "index", "name", "rating", "tags"]
+    )
 
-    _recommender_df = pd.read_csv(PROBLEMS_CSV)
+    # Clean data
     _recommender_df = _recommender_df.dropna(subset=["rating"])
     _recommender_df["tags"] = _recommender_df["tags"].fillna("")
 
+    _recommender_df = _recommender_df.head(5000)
 
 def load_chat():
     global _chat_faiss_index, _chat_chunks, _chat_embed_model
