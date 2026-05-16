@@ -3,7 +3,9 @@ import sys
 import pickle
 import numpy as np                        
 import requests
-import pandas as pd                        
+import pandas as pd
+import matplotlib
+matplotlib.use("Agg")                        
 
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS                
