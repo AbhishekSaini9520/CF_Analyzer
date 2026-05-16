@@ -1,5 +1,4 @@
 data/cf_data.csv
-src/problems_data.csv
+# src/problems_data.csv
 src/__pycache__/
-db/
 GenAI/knowledge.txt
